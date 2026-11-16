@@ -1,0 +1,1974 @@
+/* ==========================================================================
+   index.css — RouteLab Global Stylesheet
+   Clean, professional educational UI.
+   No gradients, no glassmorphism, no neon colours.
+   Accent: #2563eb (blue-600)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties
+   -------------------------------------------------------------------------- */
+:root {
+  /* Colour palette (Design Tokens) */
+  --color-bg:           #f8fafc;
+  --color-surface:      #ffffff;
+  --color-border:       #e2e8f0;
+  --color-border-dark:  #cbd5e1;
+
+  --color-text:         #0f172a;
+  --color-text-muted:   #64748b;
+  --color-text-faint:   #94a3b8;
+
+  --color-accent:       #2563eb;        /* primary blue */
+  --color-accent-hover: #1d4ed8;
+  --color-accent-light: #eff6ff;
+
+  --color-success:      #16a34a;
+  --color-error:        #ef4444;
+  --color-packet:       #f59e0b;
+
+  /* Node colours */
+  --color-node-bg:      #ffffff;
+  --color-node-border:  #3b82f6;
+  --color-node-text:    #0f172a;
+  --color-node-shadow:  rgba(37, 99, 235, 0.14);
+
+  --color-node-src:     #2563eb;
+  --color-node-dst:     #16a34a;
+  --color-node-path:    #f59e0b;
+
+  /* Typography */
+  --font-family:        'Inter', system-ui, -apple-system, sans-serif;
+  --font-size-xs:       11px;
+  --font-size-sm:       12px;
+  --font-size-base:     13px;
+  --font-size-md:       14px;
+  --font-size-lg:       16px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 14px;
+  --space-5: 16px;
+  --space-6: 20px;
+
+  /* Borders */
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-md: 8px;
+
+  /* Layout */
+  --header-height:    48px;
+  --sidebar-width:    272px;
+  --results-height:   150px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------------------
+   3. App Shell Layout
+   -------------------------------------------------------------------------- */
+
+/* Full-viewport column: Header | Body | Results */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Middle row: Sidebar | Canvas */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* --------------------------------------------------------------------------
+   4. Header
+   -------------------------------------------------------------------------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 var(--space-5);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.app-header__icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.app-header__title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.app-header__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+  margin-top: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Sidebar
+   -------------------------------------------------------------------------- */
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar__section + .sidebar__section {
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.sidebar__section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.sidebar__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar__field--half {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar__endpoints-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.sidebar__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.sidebar__select {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 26px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.sidebar__select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+.sidebar__full-btn {
+  width: 100%;
+  height: 38px;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sidebar__action-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.sidebar__action-btn {
+  flex: 1;
+  height: 36px;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sidebar__action-btn--reset {
+  height: 36px;
+  padding: 0 12px;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sidebar__edit-btn-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.sidebar__edit-btn {
+  flex: 1;
+  height: 34px;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.btn--outline--active {
+  background: #eff6ff !important;
+  color: var(--color-accent) !important;
+  border-color: #bfdbfe !important;
+}
+
+.sidebar__footer-tip {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.sidebar__tip-text {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   6. Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 7px var(--space-4);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Primary — filled blue */
+.btn--primary {
+  background: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+/* Secondary — light blue tint */
+.btn--secondary {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border-color: #bfdbfe;
+}
+.btn--secondary:hover:not(:disabled) {
+  background: #dbeafe;
+}
+
+/* Outline — ghost */
+.btn--outline {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border-dark);
+}
+.btn--outline:hover:not(:disabled) {
+  background: var(--color-bg);
+  border-color: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   7. Canvas Wrapper
+   -------------------------------------------------------------------------- */
+.canvas-wrapper {
+  flex: 1;
+  position: relative;
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+/* Make React Flow fill the wrapper completely */
+.canvas-wrapper .react-flow {
+  width: 100%;
+  height: 100%;
+}
+
+/* React Flow Controls styling */
+.canvas-wrapper .react-flow__controls {
+  box-shadow: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.canvas-wrapper .react-flow__controls-button {
+  background: var(--color-surface);
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.canvas-wrapper .react-flow__controls-button:last-child {
+  border-bottom: none;
+}
+
+.canvas-wrapper .react-flow__controls-button:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Edge label styling — override React Flow defaults */
+.canvas-wrapper .react-flow__edge-textwrapper {
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. Custom RouterNode
+   -------------------------------------------------------------------------- */
+.router-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-node-bg);
+  border: 2.5px solid var(--color-node-border);
+  box-shadow: 0 1px 4px var(--color-node-shadow);
+  cursor: grab;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.router-node:hover {
+  box-shadow: 0 2px 10px var(--color-node-shadow);
+}
+
+/* Source node — blue fill */
+.router-node--source {
+  background: var(--color-node-src);
+  border-color: var(--color-node-src);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+}
+
+.router-node--source .router-node__label {
+  color: #ffffff;
+}
+
+/* Destination node — green fill */
+.router-node--destination {
+  background: var(--color-node-dst);
+  border-color: var(--color-node-dst);
+  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.3);
+}
+
+.router-node--destination .router-node__label {
+  color: #ffffff;
+}
+
+/* On-path node — amber ring */
+.router-node--path {
+  border-color: var(--color-node-path);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+}
+
+.router-node__label {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-node-text);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+/* Pill shape for longer router names */
+.router-node--pill {
+  min-width: 52px;
+  width: auto;
+  padding: 0 10px;
+  border-radius: 26px;
+}
+
+.router-node__label--long {
+  font-size: 13px;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Small SRC / DST badge */
+.router-node__badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+
+.router-node__badge--src {
+  background: var(--color-node-src);
+  color: #ffffff;
+}
+
+.router-node__badge--dst {
+  background: var(--color-node-dst);
+  color: #ffffff;
+}
+
+/* React Flow handles — hidden, but clickable for future edge-creation */
+.router-handle {
+  width: 8px !important;
+  height: 8px !important;
+  background: var(--color-accent) !important;
+  border: 2px solid #ffffff !important;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.router-node:hover .router-handle {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   9. Results Panel
+   -------------------------------------------------------------------------- */
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: var(--results-height);
+  max-height: 44vh;
+  padding: 10px 16px 14px;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  overflow-y: auto;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.results-panel__main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.results-panel__block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.results-panel__block + .results-panel__block {
+  border-left: 1px solid var(--color-border);
+  padding-left: 16px;
+}
+
+.results-panel__heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.results-panel__placeholder {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-faint);
+  line-height: 1.6;
+  margin-top: var(--space-1);
+}
+
+.results-panel__status {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+}
+
+.results-panel__status--error {
+  background: #fef2f2;
+  color: var(--color-error);
+  border: 1px solid #fecaca;
+}
+
+.results-panel__result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.results-panel__path {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.01em;
+}
+
+.results-panel__cost {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.results-panel__algo {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   10. Routing Table
+   -------------------------------------------------------------------------- */
+.routing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.routing-table th,
+.routing-table td {
+  padding: 6px var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.routing-table th {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.routing-table td {
+  color: var(--color-text);
+}
+
+.routing-table tr:last-child td {
+  border-bottom: none;
+}
+
+.routing-table__placeholder {
+  color: var(--color-text-faint);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. Scrollbar — subtle
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-dark);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ==========================================================================
+   Phase 2 Additions
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   12. Danger button variant
+   -------------------------------------------------------------------------- */
+.btn--danger {
+  background: #fef2f2;
+  color: var(--color-error);
+  border-color: #fecaca;
+}
+.btn--danger:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+
+/* --------------------------------------------------------------------------
+   13. Inline Add-Link form
+   -------------------------------------------------------------------------- */
+.inline-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-top: 4px;
+}
+
+.inline-form__row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.inline-form__error {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   14. Text input (used in Add Link form + edge cost edit)
+   -------------------------------------------------------------------------- */
+.sidebar__input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius);
+  outline: none;
+  /* remove browser number-input arrows */
+  -moz-appearance: textfield;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.sidebar__input::-webkit-outer-spin-button,
+.sidebar__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.sidebar__input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+/* Flex-grow variant used inside inline-row */
+.sidebar__input--flex {
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   15. Inline row (cost input + Save button side-by-side)
+   -------------------------------------------------------------------------- */
+.inline-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   16. Properties panel (selected node / edge info block)
+   -------------------------------------------------------------------------- */
+.props-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 10px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.props-panel__label {
+  font-size: 12px;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.props-panel__hint {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   17. Confirm-delete row
+   -------------------------------------------------------------------------- */
+.confirm-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.confirm-row__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  font-weight: 500;
+  flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   18. Selected router node ring
+   -------------------------------------------------------------------------- */
+/* Outer dashed ring indicating canvas-selected state */
+.router-node--selected {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.22), 0 1px 4px var(--color-node-shadow);
+}
+
+/* Invisible span used as an aria-free visual cue — hidden, ring done via CSS above */
+.router-node__sel-ring {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   19. Edge click target — make edges easier to click
+   -------------------------------------------------------------------------- */
+.canvas-wrapper .react-flow__edge-interaction {
+  stroke-width: 20;
+  stroke: transparent;
+  fill: none;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Phase 3 — Shortest Path & Routing Table styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   20. Routing table — Path column
+   -------------------------------------------------------------------------- */
+/* Path column is wider and uses a smaller, muted font so long paths fit */
+.routing-table__path-cell {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  max-width: 220px;
+  word-break: break-word;
+}
+
+/* --------------------------------------------------------------------------
+   21. Routing table — Active (destination) row highlight
+   -------------------------------------------------------------------------- */
+.routing-table__row--active td {
+  background: #eff6ff;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Keep path cell legible inside the active row */
+.routing-table__row--active .routing-table__path-cell {
+  color: #1d4ed8;
+}
+
+/* --------------------------------------------------------------------------
+   22. RouterNode — path state (intermediate nodes on the shortest path)
+   -------------------------------------------------------------------------- */
+/* Override the amber color with a green ring so the path color is consistent
+   with green path edges. Source = blue fill, Destination = green fill,
+   intermediate path nodes = green ring. */
+.router-node--path {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.22), 0 1px 4px var(--color-node-shadow);
+}
+
+/* Make the label readable when the node has a coloured border */
+.router-node--path .router-node__label {
+  color: #14532d;
+}
+
+/* ==========================================================================
+   Phase 4 — Link Failure & Automatic Rerouting styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   23. Results Panel — Action notice (reroute / toggle message)
+   -------------------------------------------------------------------------- */
+.results-panel__notice {
+  font-size: 12px;
+  color: #1e40af;
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   24. Canvas Legend — Connection states
+   -------------------------------------------------------------------------- */
+.canvas-legend {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.canvas-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.canvas-legend__line {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+}
+
+.canvas-legend__line--normal {
+  background: #6b7280;
+}
+
+.canvas-legend__line--path {
+  background: #16a34a;
+  height: 3px;
+}
+
+.canvas-legend__line--disabled {
+  border-top: 2px dashed #ef4444;
+  height: 0;
+}
+
+/* ==========================================================================
+   RouteLab 2.0 — Packet Journey, Presets, and Workspace Enhancements
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   25. Header actions & Topology Scenario Selector
+   -------------------------------------------------------------------------- */
+.app-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.app-header__preset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+}
+
+.app-header__preset-icon {
+  color: var(--color-accent);
+}
+
+.app-header__preset-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.app-header__select {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   26. Button Accent (Send Packet)
+   -------------------------------------------------------------------------- */
+.btn--accent {
+  background: #f59e0b;
+  color: #ffffff;
+  border: 1px solid #d97706;
+}
+
+.btn--accent:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.btn--accent:disabled {
+  background: #fde68a;
+  border-color: #fcd34d;
+  color: #92400e;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   27. Animated Packet Marker (Viewport Portal)
+   -------------------------------------------------------------------------- */
+.packet-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 1000;
+  will-change: transform;
+}
+
+.packet-marker__core {
+  width: 20px;
+  height: 20px;
+  background: #f59e0b;
+  border: 2.5px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.packet-marker__ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid rgba(245, 158, 11, 0.6);
+  border-radius: 50%;
+  animation: packet-pulse 1.2s ease-out infinite;
+}
+
+@keyframes packet-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   28. Canvas Legend — Active Hop Indicator
+   -------------------------------------------------------------------------- */
+.canvas-legend__line--active-hop {
+  background: #f59e0b;
+  height: 4px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   29. Results Panel — 3-Column Layout & Packet Card
+   -------------------------------------------------------------------------- */
+.results-panel__block--route {
+  flex: 1 1 230px;
+  min-width: 200px;
+}
+
+.results-panel__block--packet {
+  flex: 1.1 1 250px;
+  min-width: 220px;
+}
+
+.results-panel__block--table {
+  flex: 1.6 1 340px;
+  min-width: 280px;
+}
+
+.results-panel__meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.packet-status-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.packet-status-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.packet-status-card__message {
+  font-size: 12px;
+  color: var(--color-text);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.packet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+}
+
+.packet-badge--idle {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.packet-badge--transit {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.packet-badge--delivered {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.packet-badge--failed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.packet-status-card__hop-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.packet-status-card__hop-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.hop-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.hop-progress-bar__fill {
+  height: 100%;
+  background: #f59e0b;
+  border-radius: 3px;
+  transition: width 0.25s linear;
+}
+
+/* ==========================================================================
+   Phase 7 Additions — Algorithm Steps, Comparison, Save/Load
+   ========================================================================== */
+
+/* Active Step Router Node (Purple Ring & Badge) */
+.router-node--step {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.35) !important;
+}
+
+.router-node__badge--step {
+  background: #8b5cf6;
+  color: #ffffff;
+}
+
+/* Results Panel Header Subnavigation */
+.results-panel__header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.results-panel__subnav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.results-panel__subnav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.results-panel__subnav-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-border-dark);
+}
+
+.results-panel__subnav-btn--active {
+  background: #eff6ff;
+  color: var(--color-accent);
+  border-color: #bfdbfe;
+}
+
+.results-panel__badge {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: var(--color-text-muted);
+}
+
+.results-panel__subnav-btn--active .results-panel__badge {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+/* Algorithm Steps Explorer */
+.algo-steps-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.algo-steps__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.algo-steps__counter {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.algo-steps__buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.algo-steps__desc {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.algo-steps__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.algo-steps__table th,
+.algo-steps__table td {
+  padding: 5px 8px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.algo-steps__table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #475569;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.algo-steps__table tr:last-child td {
+  border-bottom: none;
+}
+
+.algo-steps__th--active,
+.algo-steps__td--active {
+  background: #f5f3ff !important;
+  color: #6d28d9 !important;
+  font-weight: 700;
+}
+
+.algo-steps__td--visited {
+  color: #059669;
+  font-weight: 600;
+}
+
+/* Algorithm Comparison Panel */
+.algo-comparison-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.algo-comparison__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.algo-comparison__table th,
+.algo-comparison__table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.algo-comparison__table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #475569;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.algo-comparison__table tr:last-child td {
+  border-bottom: none;
+}
+
+.algo-comparison__row--active {
+  background: #eff6ff;
+}
+
+.algo-comparison__row--active td {
+  font-weight: 600;
+  color: #1e40af;
+}
+
+.algo-active-tag {
+  display: inline-block;
+  padding: 1px 5px;
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  background: #3b82f6;
+  color: #ffffff;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.algo-comparison__note {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RouteLab 2.1: Custom Network, Canvas Selection, & Event Log
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1. Canvas Empty State */
+.canvas-empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius);
+  padding: 24px 32px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.canvas-empty-state__icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.canvas-empty-state__title {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.canvas-empty-state__desc {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* 2. Interactive Packet Mode: Select on Canvas */
+.sidebar__canvas-select-row {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.sidebar__canvas-select-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+.sidebar__selection-guide {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  margin-top: 4px;
+}
+
+.sidebar__selection-guide-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2563eb;
+  animation: pulse-dot 1.4s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+.sidebar__selection-guide-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e40af;
+  line-height: 1.3;
+}
+
+.canvas-selection-banner {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #93c5fd;
+  border-radius: 999px;
+  padding: 6px 14px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+}
+
+.canvas-selection-banner__icon {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.canvas-selection-banner__text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.canvas-selection-banner__cancel {
+  padding: 2px 8px !important;
+  font-size: 11px !important;
+  height: auto !important;
+  line-height: 1.2 !important;
+}
+
+/* 3. Lightweight Modal for New Network */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
+  width: 100%;
+  max-width: 420px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+
+.modal-card__title {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.modal-card__desc {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.modal-card__warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #b45309;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.modal-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* 4. Simulation Event Log Panel */
+.event-log-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.event-log-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-log-panel__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-log-panel__title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.event-log-panel__badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  background: #e2e8f0;
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+
+.event-log__empty {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.event-log__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 130px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  padding: 6px 8px;
+}
+
+.event-log__item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #334155;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.event-log__item:hover {
+  background: #f8fafc;
+}
+
+.event-log__time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.event-log__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.event-log__dot--info {
+  background: #3b82f6;
+}
+
+.event-log__dot--success {
+  background: #16a34a;
+}
+
+.event-log__dot--warning {
+  background: #f59e0b;
+}
+
+.event-log__desc {
+  flex: 1;
+  word-break: break-word;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RouteLab 2.1 Workspace: Summary Strip, Tabbed Results & Log
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Network Summary Strip */
+.canvas-summary-strip {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-size: 11px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+}
+
+.canvas-summary-strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--color-text-muted);
+}
+
+.canvas-summary-strip__val {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.canvas-summary-strip__divider {
+  color: var(--color-border-dark);
+  font-size: 10px;
+}
+
+.canvas-summary-strip__item--disabled .canvas-summary-strip__val {
+  color: #ef4444;
+}
+
+/* Tabbed Results Workspace */
+.results-tabs-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.results-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.results-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.results-tab-btn:hover {
+  background: #f1f5f9;
+  color: var(--color-text);
+}
+
+.results-tab-btn--active {
+  background: #eff6ff;
+  color: var(--color-accent);
+  border-color: #bfdbfe;
+}
+
+.results-tab-btn__badge {
+  display: inline-block;
+  padding: 0 5px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.results-tab-btn--active .results-tab-btn__badge {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+.results-tabs-bar__algo-tag {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.results-tabs-bar__algo-label {
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+/* Overview Tab */
+.overview-tab {
+  width: 100%;
+}
+
+.results-panel__path-container {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 2px;
+}
+
+/* Compact Table Event Log */
+.event-log-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.event-log-tab__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-log-tab__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-log-tab__title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.event-log-tab__badge {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.event-log__table-wrap {
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.event-log__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.event-log__table th,
+.event-log__table td {
+  padding: 5px 8px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.event-log__table th {
+  background: #f8fafc;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.event-log__tr:hover {
+  background: #f8fafc;
+}
+
+.event-log__td-time code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.event-log__td-desc {
+  color: #1e293b;
+  font-size: 12px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-pill__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.status-pill--info {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+.status-pill--info .status-pill__dot {
+  background: #3b82f6;
+}
+
+.status-pill--success {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+.status-pill--success .status-pill__dot {
+  background: #16a34a;
+}
+
+.status-pill--warning {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+.status-pill--warning .status-pill__dot {
+  background: #f59e0b;
+}
+
+.routing-table-container {
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.routing-table-container .routing-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.routing-table__path-cell {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
